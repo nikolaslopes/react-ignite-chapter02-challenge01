@@ -36,6 +36,12 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
     try {
       const updatedCart = [...cart]
 
+      //     !!  vou te explicar aqui, mas se tiver continuar com dúvida pode me chamar discord. Quando você faz o find, ele retorna o elemento do array. Porém, lembre que é um array de objetos e, dessa forma, o find retorna a referência do objeto, não uma cópia dele. Então você pode atualizar esse elemento diretamente que também altera no array.
+
+      // !!Inclusive, isso acabou ocasionado em um erro no vídeo que, apesar de não interferir, vale a pena apontar. Um dos comentários aqui do vídeo é do Rafael Kozar, respondi ele por lá de forma mais completa.
+
+      console.log('1', updatedCart)
+
       const productExists = updatedCart.find(
         (product) => product.id === productId
       )
@@ -63,10 +69,13 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
           amount: 1,
         }
 
+        console.log('2')
+
         updatedCart.push(newProduct)
       }
 
       setCart(updatedCart)
+      console.log('3', updatedCart)
       localStorage.setItem('@RocketShoes:cart', JSON.stringify(updatedCart))
     } catch {
       toast.error('Erro na adição do produto')
@@ -80,8 +89,6 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       // TODO
     }
   }
-
-  console.log('cart', cart)
 
   const updateProductAmount = async ({
     productId,

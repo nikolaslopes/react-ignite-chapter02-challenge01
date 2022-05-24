@@ -28,21 +28,21 @@ const Home = (): JSX.Element => {
   const cartItemsAmount = cart.reduce((accumulator, product) => {
     const newAccumulator = { ...accumulator }
     newAccumulator[product.id] = product.amount
-
-    console.log('acc', accumulator)
-    console.log('🚀newAccumulator', newAccumulator)
-
     return newAccumulator
   }, {} as CartItemsAmount)
 
-  console.log('cartitemsamount', cartItemsAmount)
-
   useEffect(() => {
     async function loadProducts() {
-      api.get('products').then(({ data }) => setProducts(data))
+      const response = await api.get<Product[]>('products')
+
+      const data = response.data.map((product) => ({
+        ...product,
+        priceFormatted: formatPrice(product.price),
+      }))
+
+      setProducts(data)
     }
 
-    console.log('use')
     loadProducts()
   }, [])
 
