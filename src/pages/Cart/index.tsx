@@ -23,14 +23,16 @@ const Cart = (): JSX.Element => {
   const cartFormatted = cart.map((product) => ({
     ...product,
     priceFormatted: formatPrice(product.price),
+    subTotal: formatPrice(product.price * product.amount),
   }))
 
-  // const total =
-  //   formatPrice(
-  //     cart.reduce((sumTotal, product) => {
-  //       // TODO
-  //     }, 0)
-  //   )
+  console.log(cartFormatted)
+
+  const total = formatPrice(
+    cart.reduce((accumulator, product) => {
+      return accumulator + product.price * product.amount
+    }, 0)
+  )
 
   function handleProductIncrement(product: Product) {
     updateProductAmount({ amount: product.amount, productId: product.id })
@@ -65,7 +67,7 @@ const Cart = (): JSX.Element => {
                 </td>
                 <td>
                   <strong>{product.title}</strong>
-                  <span>{product.price}</span>
+                  <span>{product.priceFormatted}</span>
                 </td>
                 <td>
                   <div>
@@ -93,7 +95,7 @@ const Cart = (): JSX.Element => {
                   </div>
                 </td>
                 <td>
-                  <strong>R$ 359,80</strong>
+                  <strong>{product.subTotal}</strong>
                 </td>
                 <td>
                   <button
@@ -115,7 +117,7 @@ const Cart = (): JSX.Element => {
 
         <Total>
           <span>TOTAL</span>
-          <strong>R$ 359,80</strong>
+          <strong>{total}</strong>
         </Total>
       </footer>
     </Container>
