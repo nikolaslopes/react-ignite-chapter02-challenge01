@@ -88,7 +88,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
     amount,
   }: UpdateProductAmount) => {
     try {
-      // TODO
+      console.log(productId, amount)
     } catch {
       // TODO
     }

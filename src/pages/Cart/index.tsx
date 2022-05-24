@@ -20,9 +20,11 @@ interface Product {
 const Cart = (): JSX.Element => {
   const { cart, removeProduct, updateProductAmount } = useCart()
 
-  // const cartFormatted = cart.map(product => ({
-  //   // TODO
-  // }))
+  const cartFormatted = cart.map((product) => ({
+    ...product,
+    priceFormatted: formatPrice(product.price),
+  }))
+
   // const total =
   //   formatPrice(
   //     cart.reduce((sumTotal, product) => {
@@ -31,7 +33,7 @@ const Cart = (): JSX.Element => {
   //   )
 
   function handleProductIncrement(product: Product) {
-    // TODO
+    updateProductAmount({ amount: product.amount, productId: product.id })
   }
 
   function handleProductDecrement(product: Product) {
@@ -45,7 +47,7 @@ const Cart = (): JSX.Element => {
   return (
     <Container>
       <ProductTable>
-        {cart.map((product) => (
+        {cartFormatted.map((product) => (
           <>
             <thead>
               <tr>
@@ -71,7 +73,7 @@ const Cart = (): JSX.Element => {
                       type="button"
                       data-testid="decrement-product"
                       disabled={product.amount <= 1}
-                      // onClick={() => handleProductDecrement(product)}
+                      onClick={() => handleProductDecrement(product)}
                     >
                       <MdRemoveCircleOutline size={20} />
                     </button>
@@ -79,12 +81,12 @@ const Cart = (): JSX.Element => {
                       type="text"
                       data-testid="product-amount"
                       readOnly
-                      value={2}
+                      value={product.amount}
                     />
                     <button
                       type="button"
                       data-testid="increment-product"
-                      // onClick={() => handleProductIncrement()}
+                      onClick={() => handleProductIncrement(product)}
                     >
                       <MdAddCircleOutline size={20} />
                     </button>
