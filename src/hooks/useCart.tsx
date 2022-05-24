@@ -1,8 +1,7 @@
-import { stringify } from 'querystring'
 import { createContext, ReactNode, useContext, useState } from 'react'
 import { toast } from 'react-toastify'
 import { api } from '../services/api'
-import { Product, Stock } from '../types'
+import { Product } from '../types'
 
 interface CartProviderProps {
   children: ReactNode
@@ -65,7 +64,6 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       }
 
       setCart(updatedCart)
-      console.log('3', updatedCart)
       localStorage.setItem('@RocketShoes:cart', JSON.stringify(updatedCart))
     } catch {
       toast.error('Erro na adição do produto')
@@ -116,7 +114,10 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
         product.id === productId ? { ...product, amount: amount } : product
       )
 
+      console.log('productupdated', productUpdated)
+
       setCart(productUpdated)
+      localStorage.setItem('@RocketShoes:cart', JSON.stringify(productUpdated))
     } catch {
       toast.error('Erro na alteração de quantidade do produto')
     }
