@@ -35,11 +35,11 @@ const Cart = (): JSX.Element => {
   )
 
   function handleProductIncrement(product: Product) {
-    updateProductAmount({ amount: product.amount, productId: product.id })
+    updateProductAmount({ amount: product.amount + 1, productId: product.id })
   }
 
   function handleProductDecrement(product: Product) {
-    // TODO
+    updateProductAmount({ amount: product.amount - 1, productId: product.id })
   }
 
   function handleRemoveProduct(productId: number) {
@@ -58,9 +58,9 @@ const Cart = (): JSX.Element => {
             <th aria-label="delete icon" />
           </tr>
         </thead>
-        {cartFormatted.map((product) => (
-          <tbody key={product.id}>
-            <tr data-testid="product">
+        <tbody>
+          {cartFormatted.map((product) => (
+            <tr key={product.id} data-testid="product">
               <td>
                 <img src={product.image} alt={product.title} />
               </td>
@@ -106,8 +106,8 @@ const Cart = (): JSX.Element => {
                 </button>
               </td>
             </tr>
-          </tbody>
-        ))}
+          ))}
+        </tbody>
       </ProductTable>
 
       <footer>
