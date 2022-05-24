@@ -2,31 +2,40 @@ import React, { useState, useEffect } from 'react'
 import { MdAddShoppingCart } from 'react-icons/md'
 
 import { ProductList } from './styles'
+import { api } from '../../services/api'
 import { formatPrice } from '../../util/format'
 import { useCart } from '../../hooks/useCart'
-import { getProducts } from './services'
-import { IProductFormatted } from '../../interfaces/IProductFormatted'
+
+interface Product {
+  id: number
+  title: string
+  price: number
+  image: string
+}
+
+interface ProductFormatted extends Product {
+  priceFormatted: string
+}
 
 interface CartItemsAmount {
   [key: number]: number
 }
 
 const Home = (): JSX.Element => {
-  const [products, setProducts] = useState<IProductFormatted[]>([])
+  const [products, setProducts] = useState<ProductFormatted[]>([])
   const { addProduct, cart } = useCart()
 
-  // const cartItemsAmount = cart.reduce((accumulator, product) => {},
-  // {} as CartItemsAmount)
+  // const cartItemsAmount = cart.reduce((sumAmount, product) => {
+  //   // TODO
+  // }, {} as CartItemsAmount)
 
   useEffect(() => {
-    fetchAndUpdateProducts()
+    async function loadProducts() {
+      api.get('products').then(({ data }) => setProducts(data))
+    }
+
+    loadProducts()
   }, [])
-
-  async function fetchAndUpdateProducts() {
-    const data = await getProducts()
-
-    setProducts(data)
-  }
 
   function handleAddProduct(id: number) {
     addProduct(id)
@@ -38,7 +47,7 @@ const Home = (): JSX.Element => {
         <li key={product.id}>
           <img src={product.image} alt={product.title} />
           <strong>{product.title}</strong>
-          <span>{formatPrice(product.price)}</span>
+          <span>{product.price}</span>
           <button
             type="button"
             data-testid="add-product-button"
